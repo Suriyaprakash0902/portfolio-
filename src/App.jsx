@@ -11,6 +11,7 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeSection, setActiveSection] = useState('home');
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -32,11 +33,24 @@ function App() {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
+    // Intersection Observer for active section tracking
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section) => observer.observe(section));
+
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
+      sections.forEach((section) => observer.unobserve(section));
     };
   }, []);
 
@@ -147,11 +161,23 @@ function App() {
           </div>
           
           <div className="nav-links">
-            <a href="#home">_home</a>
-            <a href="#about">_about</a>
-            <a href="#experience">_experience</a>
-            <a href="#projects">_projects</a>
-            <a href="#contact">_contact</a>
+            {['home', 'about', 'experience', 'projects', 'contact'].map((section) => (
+              <a 
+                key={section} 
+                href={`#${section}`} 
+                onClick={() => setActiveSection(section)}
+                className={activeSection === section ? 'active' : ''}
+              >
+                _{section}
+                {activeSection === section && (
+                  <motion.div 
+                    layoutId="nav-pill" 
+                    className="nav-active-bg" 
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </a>
+            ))}
           </div>
 
           <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
