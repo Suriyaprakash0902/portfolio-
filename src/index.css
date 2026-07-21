@@ -24,6 +24,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  cursor: none !important; /* Hide default cursor */
 }
 
 body {
@@ -32,6 +33,46 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--accent-cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 15px var(--cyan-glow);
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Scroll Progress Bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, var(--accent-cyan), var(--accent));
+  transform-origin: 0%;
+  z-index: 10000;
+  box-shadow: 0 0 15px var(--cyan-glow);
 }
 
 /* Deep Space Technical Grid Background */

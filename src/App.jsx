@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import Tilt from 'react-parallax-tilt';
 import { Terminal, Download, Code2, Database, Layout, Server, ExternalLink, Menu, X, FolderGit2 } from 'lucide-react';
@@ -10,11 +10,34 @@ import './index.css';
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
+    // Console Easter Egg
+    console.log(
+      "%c🚀 Welcome to Suriya's Portfolio! %c\nIf you're reading this, you must be a developer. Let's build something awesome: suriyaaasuriya07@gmail.com",
+      "color: #06b6d4; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #06b6d4;",
+      "color: #10b981; font-size: 14px;"
+    );
+
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const fadeInUp = {
@@ -97,6 +120,21 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Custom Cursor */}
+      <motion.div 
+        className="custom-cursor"
+        animate={{ x: mousePosition.x - 16, y: mousePosition.y - 16 }}
+        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
+      />
+      <motion.div 
+        className="custom-cursor-dot"
+        animate={{ x: mousePosition.x - 4, y: mousePosition.y - 4 }}
+        transition={{ type: "spring", stiffness: 1000, damping: 40, mass: 0.1 }}
+      />
+
+      {/* Scroll Progress Bar */}
+      <motion.div className="scroll-progress" style={{ scaleX }} />
+
       {/* Background Grid */}
       <div className="bg-grid"></div>
 
