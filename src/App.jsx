@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, ExternalLink, ChevronRight, Menu, X, Download } from 'lucide-react';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { TypeAnimation } from 'react-type-animation';
+import Tilt from 'react-parallax-tilt';
+import { Terminal, Download, Code2, Database, Layout, Server, ExternalLink, Menu, X, FolderGit2 } from 'lucide-react';
+import { FaGithub, FaLinkedin, FaReact, FaNodeJs, FaLaravel } from 'react-icons/fa';
+import { SiPostgresql, SiMongodb } from 'react-icons/si';
 import './index.css';
 
 function App() {
@@ -9,32 +12,23 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      transition: { staggerChildren: 0.2 }
     }
   };
-
-  const skills = [
-    'React.js', 'Node.js', 'Laravel', 'MongoDB', 'PostgreSQL', 
-    'Express.js', 'Socket.io', 'Redux.js', 'REST APIs', 'JWT Auth'
-  ];
 
   const experience = [
     {
@@ -103,17 +97,23 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Background Grid */}
+      <div className="bg-grid"></div>
+
       {/* Navbar */}
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container nav-container">
-          <div className="logo">Suriya<span>.dev</span></div>
+          <div className="logo">
+            <Terminal size={24} className="project-folder-icon" />
+            Suriya<span>.dev</span>
+          </div>
           
           <div className="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href="#home">_home</a>
+            <a href="#about">_about</a>
+            <a href="#experience">_experience</a>
+            <a href="#projects">_projects</a>
+            <a href="#contact">_contact</a>
           </div>
 
           <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -131,73 +131,92 @@ function App() {
             animate="visible"
             variants={staggerContainer}
           >
-            <motion.span variants={fadeInUp} className="hero-greeting">Hi, I am Suriya Prakash</motion.span>
+            <motion.div variants={fadeInUp} className="hero-terminal">
+              <span>$</span>
+              <TypeAnimation
+                sequence={[
+                  'whoami',
+                  1000,
+                  'Suriya Prakash',
+                  2000,
+                  './execute_skills.sh',
+                  1000,
+                ]}
+                wrapper="span"
+                speed={50}
+                repeat={Infinity}
+              />
+            </motion.div>
+
             <motion.h1 variants={fadeInUp} className="hero-title">
-              Crafting robust <br/><span>digital experiences.</span>
+              Architecting the <br/><span>digital future.</span>
             </motion.h1>
+            
             <motion.p variants={fadeInUp} className="hero-subtitle">
-              Full Stack Developer with 5+ years of experience architecting and shipping production-grade applications.
+              Full Stack Developer with 5+ years of experience engineering highly scalable, production-grade web applications using the MERN stack and Laravel.
             </motion.p>
+            
             <motion.div variants={fadeInUp} className="hero-actions">
-              <a href="#projects" className="btn btn-primary">View Work</a>
+              <a href="#projects" className="btn btn-primary">Deploy Work</a>
               <a href="/resume.pdf" download="Suriya_Prakash_Resume.pdf" className="btn btn-outline">
-                Resume <Download size={18} />
+                <Download size={18} /> Resume.pdf
               </a>
-              <a href="#contact" className="btn btn-outline">Contact Me</a>
             </motion.div>
           </motion.div>
           
           <motion.div 
             className="hero-image-container"
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1 }}
           >
             <div className="hero-image-wrapper">
-              {/* Fallback image since the original was lost in Vite setup */}
-              <img src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?q=80&w=600&auto=format&fit=crop" alt="Suriya Prakash" className="hero-image" />
+              <img src="/profile.jpeg" alt="Suriya Prakash" className="hero-image" onError={(e)=>{e.target.onerror = null; e.target.src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?q=80&w=600&auto=format&fit=crop"}} />
             </div>
+            {/* Floating Tech Icons */}
+            <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 4, repeat: Infinity }} style={{ position: 'absolute', top: '-20px', left: '-20px', fontSize: '3rem', color: '#61DAFB' }}>
+              <FaReact />
+            </motion.div>
+            <motion.div animate={{ y: [0, 20, 0] }} transition={{ duration: 5, repeat: Infinity }} style={{ position: 'absolute', bottom: '-10px', right: '-10px', fontSize: '3rem', color: '#339933' }}>
+              <FaNodeJs />
+            </motion.div>
+            <motion.div animate={{ y: [0, -15, 0] }} transition={{ duration: 3.5, repeat: Infinity }} style={{ position: 'absolute', top: '50%', right: '-40px', fontSize: '2.5rem', color: '#FF2D20' }}>
+              <FaLaravel />
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="section glass-section container">
+      {/* About Section - IDE Style */}
+      <section id="about" className="section container">
         <motion.div 
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeInUp}
         >
-          <h2 className="section-title">About <span>Me</span></h2>
-          <div className="about-grid">
-            <div className="about-text glass">
-              <div style={{padding: '2rem'}}>
-                <p>
-                  I am a passionate Full Stack Developer with expertise in the MERN Stack and Laravel. 
-                  Over the past 5 years, I have engineered scalable web applications for government sectors, 
-                  startups, and enterprises.
-                </p>
-                <p>
-                  I specialize in real-time systems, REST APIs, and microservices architecture. 
-                  My focus is on writing clean, efficient code and delivering seamless user experiences 
-                  from backend databases to frontend interfaces.
-                </p>
+          <h2 className="section-title"><span>{'<'}</span> About_Me <span>{'/>'}</span></h2>
+          
+          <div className="ide-window">
+            <div className="ide-header">
+              <div className="ide-controls">
+                <div className="ide-control red"></div>
+                <div className="ide-control yellow"></div>
+                <div className="ide-control green"></div>
               </div>
+              <div className="ide-title">suriya_profile.json</div>
             </div>
-            <div className="about-skills">
-              <h3 style={{marginBottom: '1.5rem', fontSize: '1.5rem'}}>Technical Arsenal</h3>
-              <div className="skills-container">
-                {skills.map((skill, index) => (
-                  <motion.span 
-                    key={index} 
-                    className="skill-tag"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </div>
+            <div className="ide-body">
+              <div className="code-line"><span className="line-num">1</span><span className="code-content">{'{'}</span></div>
+              <div className="code-line"><span className="line-num">2</span><span className="code-content">&nbsp;&nbsp;<span className="property">"name"</span>: <span className="string">"Suriya Prakash"</span>,</span></div>
+              <div className="code-line"><span className="line-num">3</span><span className="code-content">&nbsp;&nbsp;<span className="property">"role"</span>: <span className="string">"Full Stack Developer"</span>,</span></div>
+              <div className="code-line"><span className="line-num">4</span><span className="code-content">&nbsp;&nbsp;<span className="property">"experience_years"</span>: <span className="keyword">5</span>,</span></div>
+              <div className="code-line"><span className="line-num">5</span><span className="code-content">&nbsp;&nbsp;<span className="property">"skills"</span>: {'['}</span></div>
+              <div className="code-line"><span className="line-num">6</span><span className="code-content">&nbsp;&nbsp;&nbsp;&nbsp;<span className="string">"React.js"</span>, <span className="string">"Node.js"</span>, <span className="string">"Laravel"</span>,</span></div>
+              <div className="code-line"><span className="line-num">7</span><span className="code-content">&nbsp;&nbsp;&nbsp;&nbsp;<span className="string">"PostgreSQL"</span>, <span className="string">"MongoDB"</span>, <span className="string">"Socket.io"</span></span></div>
+              <div className="code-line"><span className="line-num">8</span><span className="code-content">&nbsp;&nbsp;{']'},</span></div>
+              <div className="code-line"><span className="line-num">9</span><span className="code-content">&nbsp;&nbsp;<span className="property">"description"</span>: <span className="string">"I specialize in architecting state-wide government platforms, real-time auction systems, and AI-powered CRMs. I love turning complex logic into seamless API endpoints and beautiful UI components."</span></span></div>
+              <div className="code-line"><span className="line-num">10</span><span className="code-content">{'}'}</span></div>
             </div>
           </div>
         </motion.div>
@@ -211,7 +230,7 @@ function App() {
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeInUp}
         >
-          <h2 className="section-title">Professional <span>Journey</span></h2>
+          <h2 className="section-title"><span>{'./'}</span>Execution_Log</h2>
           <div className="timeline">
             {experience.map((exp, index) => (
               <motion.div 
@@ -219,11 +238,11 @@ function App() {
                 className="timeline-item"
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
               >
                 <div className="timeline-dot"></div>
-                <div className="timeline-content glass">
+                <div className="timeline-content">
                   <div className="timeline-date">{exp.period}</div>
                   <h3 className="timeline-title">{exp.role}</h3>
                   <div className="timeline-company">{exp.company}</div>
@@ -247,23 +266,24 @@ function App() {
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
         >
-          <h2 className="section-title">Featured <span>Projects</span></h2>
+          <h2 className="section-title">Deployed_<span>Modules</span></h2>
           <div className="projects-grid">
             {projects.map((project, index) => (
-              <motion.div 
-                key={index} 
-                className="project-card glass"
-                variants={fadeInUp}
-                whileHover={{ y: -10 }}
-              >
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-desc">{project.desc}</p>
-                <div className="project-links">
-                  <a href={project.link} target="_blank" rel="noreferrer" className="project-link">
-                    Live Demo <ExternalLink size={16} />
-                  </a>
-                </div>
-              </motion.div>
+              <Tilt key={index} tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000}>
+                <motion.div 
+                  className="project-card"
+                  variants={fadeInUp}
+                >
+                  <FolderGit2 size={40} className="project-folder-icon" />
+                  <h3 className="project-title">{project.title}</h3>
+                  <p className="project-desc">{project.desc}</p>
+                  <div className="project-links">
+                    <a href={project.link} target="_blank" rel="noreferrer" className="project-link">
+                      <ExternalLink size={16} /> Live Demo
+                    </a>
+                  </div>
+                </motion.div>
+              </Tilt>
             ))}
           </div>
         </motion.div>
@@ -277,28 +297,22 @@ function App() {
           viewport={{ once: true }}
           variants={fadeInUp}
         >
-          <div className="contact-container glass" style={{padding: '3rem'}}>
-            <h2 className="section-title" style={{marginBottom: '1rem'}}>Get In <span>Touch</span></h2>
+          <div className="contact-container">
+            <h2 className="section-title" style={{marginBottom: '2rem'}}>initiate_<span>connection</span></h2>
             <p className="contact-text">
-              I am currently open for new opportunities. Whether you have a question or just want to say hi, 
-              I'll try my best to get back to you!
+              Looking for a robust backend architecture or a pixel-perfect frontend? 
+              My inbox is always open. Let's build something extraordinary together.
             </p>
             <a href="mailto:suriyaaasuriya07@gmail.com" className="btn btn-primary" style={{marginBottom: '2rem'}}>
-              Say Hello
+              Send Transmission
             </a>
             
             <div className="contact-links">
               <a href="https://github.com/Suriyaprakash0902" target="_blank" rel="noreferrer" className="contact-icon">
-                <FaGithub size={24} />
+                <FaGithub size={28} />
               </a>
               <a href="https://www.linkedin.com/in/suriyaaa-suriya-4bb73a26a" target="_blank" rel="noreferrer" className="contact-icon">
-                <FaLinkedin size={24} />
-              </a>
-              <a href="mailto:suriyaaasuriya07@gmail.com" className="contact-icon">
-                <Mail size={24} />
-              </a>
-              <a href="tel:+918122326558" className="contact-icon">
-                <Phone size={24} />
+                <FaLinkedin size={28} />
               </a>
             </div>
           </div>
@@ -307,7 +321,8 @@ function App() {
 
       {/* Footer */}
       <footer className="footer container">
-        <p>Built with React & Framer Motion by Suriya Prakash. All rights reserved.</p>
+        <p>System built by <span>Suriya Prakash</span> using React & Framer Motion.</p>
+        <p style={{marginTop: '0.5rem', opacity: 0.5}}>Status: Online // All systems nominal.</p>
       </footer>
     </div>
   );
